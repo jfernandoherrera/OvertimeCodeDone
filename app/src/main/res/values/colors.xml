@@ -1,6 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#f5f5f5</color>
-    <color name="colorPrimaryDark">#5dede1</color>
-    <color name="colorAccent">#FF4081</color>
+
+    <color name="colorPrimary">#333333</color>
+    <color name="colorPrimaryDark">#424242</color>
+    <color name="dialogColor">#CC424242</color>
+    <color name="titleBackground">#62fafafa</color>
+    <color name="colorAccent">#00b3ce</color>
+    <color name="colorAccent2">#80bb41</color>
+    <color name="colorAccent3">#5d9431</color>
+    <color name="colorAccentText">#005b66</color>
+    <color name="black">#000000</color>
+    <color name="blackPrimary">#de000000</color>
+    <color name="blackSecondary">#8a000000</color>
+    <color name="blackHintDisabled">#62000000</color>
+    <color name="blue_link">#003eb8</color>
+    <color name="white">#FFFFFF</color>
+    <color name="white_login">#ebebeb</color>
+    <color name="or_color">#c8c8c8</color>
+    <color name="separator_color">#d5de94</color>
+    <color name="expanded_children_color">#FFFFFF</color>
+    <color name="bg_title">#e7e7e7</color>
+    <color name="bg_review_button">#0a4e51</color>
 </resources>

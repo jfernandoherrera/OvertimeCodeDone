@@ -4,8 +4,7 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.widget.TextView;
-
-import com.kaotiko.overtimecodedone.utils.common.font.AppFont;
+import com.kaotiko.overtimecodedone.app.Application;
 
 public class AppTextView extends TextView{
 
@@ -20,9 +19,9 @@ public class AppTextView extends TextView{
 
         super(context, attrs, defStyle);
 
-        AppFont appFont = new AppFont();
+        Typeface typeface = ((Application)context.getApplicationContext()).getTypeface();
 
-                setTypeface(appFont.getAppFontStencilLight(context));
+                setTypeface(typeface);
 
     }
 
