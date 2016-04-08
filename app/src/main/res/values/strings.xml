@@ -6,4 +6,7 @@
     <string name="duration">Duración</string>
     <string name="description">Descripción</string>
     <string name="commitId">ID Commit</string>
+    <string name="overtime_code_done">Codificando en Horas Extra</string>
+    <string name="ok">Listo</string>
+    <string name="date">Fecha</string>
 </resources>

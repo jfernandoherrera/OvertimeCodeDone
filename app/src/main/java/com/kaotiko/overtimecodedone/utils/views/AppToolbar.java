@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.widget.TextView;
 
 import com.kaotiko.overtimecodedone.R;
+import com.kaotiko.overtimecodedone.utils.common.font.AppFont;
 
 public class AppToolbar extends Toolbar {
 
@@ -29,6 +30,10 @@ public class AppToolbar extends Toolbar {
         inflater.inflate(R.layout.toolbar, this);
 
         textView = (TextView) findViewById(R.id.toolbarTextView);
+
+        AppFont appFont = new AppFont();
+
+        textView.setTypeface(appFont.getAppFontCaptureIt(context));
 
     }
 

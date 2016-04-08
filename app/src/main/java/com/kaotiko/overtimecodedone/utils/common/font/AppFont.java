@@ -14,4 +14,11 @@ public class AppFont {
 
     }
 
+    public Typeface getAppFontCaptureIt(Context context){
+
+        Typeface typeface = Typeface.createFromAsset(context.getAssets(), "fonts/Capture_it.ttf");
+
+        return typeface;
+
+    }
 }
