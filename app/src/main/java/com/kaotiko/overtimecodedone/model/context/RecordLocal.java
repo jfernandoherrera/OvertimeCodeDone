@@ -12,6 +12,8 @@ import com.kaotiko.overtimecodedone.model.domain.RecordAttributes;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
 
 public class RecordLocal extends SQLiteOpenHelper {
 
@@ -72,6 +74,8 @@ public class RecordLocal extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
 
         }
+
+        Collections.reverse(records);
 
         cursor.close();
 

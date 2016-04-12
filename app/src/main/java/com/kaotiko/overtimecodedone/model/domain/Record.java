@@ -1,7 +1,6 @@
 package com.kaotiko.overtimecodedone.model.domain;
 
 import java.util.Calendar;
-import java.util.Date;
 
 public class Record {
 
@@ -11,13 +10,18 @@ public class Record {
     private String description;
     private int durationHours;
     private int durationMinutes;
-    private boolean isSet;
+    private boolean isProgrammaticallyChanged;
+    private boolean isWaitingSave;
+    private boolean onEditedDate;
 
     public Record(int id, Calendar date, String commitId, String description, int durationHours, int durationMinutes) {
 
-        isSet = false;
+        isProgrammaticallyChanged = true;
+        isWaitingSave = false;
+        onEditedDate = false;
         this.id = id;
         this.commitId = commitId;
+
         this.date = date;
         this.description = description;
         this.durationHours = durationHours;
@@ -25,15 +29,39 @@ public class Record {
 
     }
 
-    public void setSet(boolean set) {
+    public void setOnEditedDate(boolean onEditedDate) {
 
-        isSet = set;
+        this.onEditedDate = onEditedDate;
+
+    }
+
+    public boolean getOnEditedDate() {
+
+        return onEditedDate;
+
+    }
+
+    public void setIsProgrammaticallyChanged(boolean set) {
+
+        isProgrammaticallyChanged = set;
+
+    }
+
+    public void setWaitingSave(boolean waitingSave) {
+
+        isWaitingSave = waitingSave;
+
+    }
+
+    public boolean getIsWaitingSave() {
+
+        return isWaitingSave;
 
     }
 
     public boolean getIsSet() {
 
-        return isSet;
+        return isProgrammaticallyChanged;
 
     }
 
