@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.kaotiko.overtimecodedone.model.domain.Record;
 import com.kaotiko.overtimecodedone.model.domain.RecordAttributes;
@@ -58,18 +59,21 @@ public class RecordLocal extends SQLiteOpenHelper {
 
                 Calendar calendar = Calendar.getInstance();
 
-                calendar.setTimeInMillis(cursor.getInt(RecordAttributes.dateIndex));
+                calendar.setTimeInMillis(cursor.getLong(RecordAttributes.dateIndex));
 
                 Record record = new Record(cursor.getInt(RecordAttributes.idIndex),
                         calendar, cursor.getString(RecordAttributes.commitIdIndex),
                         cursor.getString(RecordAttributes.descriptionIndex),
-                        cursor.getInt(RecordAttributes.durationHoursIndex), cursor.getInt(RecordAttributes.durationMinutesIndex));
+                        cursor.getInt(RecordAttributes.durationHoursIndex),
+                        cursor.getInt(RecordAttributes.durationMinutesIndex));
 
                records.add(record);
 
             } while (cursor.moveToNext());
 
         }
+
+        cursor.close();
 
         return records;
 

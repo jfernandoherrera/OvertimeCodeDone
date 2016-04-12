@@ -11,9 +11,11 @@ public class Record {
     private String description;
     private int durationHours;
     private int durationMinutes;
+    private boolean isSet;
 
     public Record(int id, Calendar date, String commitId, String description, int durationHours, int durationMinutes) {
 
+        isSet = false;
         this.id = id;
         this.commitId = commitId;
         this.date = date;
@@ -23,9 +25,51 @@ public class Record {
 
     }
 
+    public void setSet(boolean set) {
+
+        isSet = set;
+
+    }
+
+    public boolean getIsSet() {
+
+        return isSet;
+
+    }
+
     public int getId() {
 
         return id;
+
+    }
+
+    public void setDate(Calendar date) {
+
+        this.date = date;
+
+    }
+
+    public void setCommitId(String commitId) {
+
+        this.commitId = commitId;
+
+    }
+
+    public void setDescription(String description) {
+
+        this.description = description;
+
+    }
+
+    public void setDurationHours(int durationHours) {
+
+        this.durationHours = durationHours;
+
+    }
+
+    public void setDurationMinutes(int durationMinutes) {
+
+        this.durationMinutes = durationMinutes;
 
     }
 
