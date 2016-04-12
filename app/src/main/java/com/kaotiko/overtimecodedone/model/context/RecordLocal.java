@@ -111,7 +111,7 @@ public class RecordLocal extends SQLiteOpenHelper {
 
         contentValues.put(RecordAttributes.durationMinutes, record.getDurationMinutes());
 
-        database.update(tableName, contentValues,"_id="+ record.getId(), null);
+        database.update(tableName, contentValues,"rowid="+ record.getId(), null);
 
     }
 
