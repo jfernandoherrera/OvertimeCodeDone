@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">OvertimeCodeDone</string>
+    <string name="action_settings">Send</string>
+    <string name="hour">Hr</string>
+    <string name="min">Min</string>
+    <string name="duration">Duration</string>
+    <string name="description">Description</string>
+    <string name="commitId">ID Commit</string>
+    <string name="overtime_code_done">OverTimeCodeDone</string>
+    <string name="ok">OK</string>
+    <string name="date">Date</string>
+</resources>
