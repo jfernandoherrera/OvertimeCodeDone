@@ -59,7 +59,7 @@ public class Record {
 
     }
 
-    public boolean getIsSet() {
+    public boolean getIsProgrammaticallyChanged() {
 
         return isProgrammaticallyChanged;
 
