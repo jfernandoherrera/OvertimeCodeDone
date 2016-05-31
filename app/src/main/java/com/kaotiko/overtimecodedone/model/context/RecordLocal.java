@@ -83,7 +83,7 @@ public class RecordLocal extends SQLiteOpenHelper {
 
     }
 
-    public void insertRecord(Record record) {
+    public long insertRecord(Record record) {
 
         ContentValues contentValues = new ContentValues();
 
@@ -97,7 +97,7 @@ public class RecordLocal extends SQLiteOpenHelper {
 
         contentValues.put(RecordAttributes.durationMinutes, record.getDurationMinutes());
 
-        database.insert(tableName, null, contentValues);
+        return database.insert(tableName, null, contentValues);
 
     }
 

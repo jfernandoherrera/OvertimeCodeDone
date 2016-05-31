@@ -32,9 +32,9 @@ public class RecordContext {
 
     }
 
-    public void insertRecord(Record record) {
+    public long insertRecord(Record record) {
 
-        recordLocal.insertRecord(record);
+      return recordLocal.insertRecord(record);
 
     }
 

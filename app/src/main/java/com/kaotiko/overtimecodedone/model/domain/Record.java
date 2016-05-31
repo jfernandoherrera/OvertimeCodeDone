@@ -4,7 +4,7 @@ import java.util.Calendar;
 
 public class Record {
 
-    private int id;
+    private long id;
     private Calendar date;
     private String commitId;
     private String description;
@@ -21,11 +21,16 @@ public class Record {
         onEditedDate = false;
         this.id = id;
         this.commitId = commitId;
-
         this.date = date;
         this.description = description;
         this.durationHours = durationHours;
         this.durationMinutes = durationMinutes;
+
+    }
+
+    public void setId(long id) {
+
+        this.id = id;
 
     }
 
@@ -65,7 +70,7 @@ public class Record {
 
     }
 
-    public int getId() {
+    public long getId() {
 
         return id;
 
