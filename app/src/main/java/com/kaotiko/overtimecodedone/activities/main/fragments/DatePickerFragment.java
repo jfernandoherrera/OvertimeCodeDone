@@ -67,7 +67,6 @@ public class DatePickerFragment extends DialogFragment
             public void onClick(DialogInterface dialog, int which) {
 
 
-
             }
         };
 

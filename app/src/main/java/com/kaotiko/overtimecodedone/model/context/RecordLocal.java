@@ -18,7 +18,8 @@ import java.util.Collections;
 public class RecordLocal extends SQLiteOpenHelper {
 
     private final String tableName = "records";
-    private final String DATABASE_CREATE = "CREATE TABLE " + tableName + " (id integer primary key autoincrement, date integer, commitId text, description text, durationHours integer, durationMinutes integer);";
+    private final String recordsCreate = "CREATE TABLE " + tableName + " (id integer primary key autoincrement, date integer, commitId text, description text, durationHours integer, durationMinutes integer);";
+    private final String emailsCreate = "CREATE TABLE emails (id integer primary key autoincrement, email text);";
     private final String DATABASE_UPGRADE = "DROP TABLE IF EXISTS records";
     private SQLiteDatabase database;
 
@@ -37,7 +38,8 @@ public class RecordLocal extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
 
-        db.execSQL(DATABASE_CREATE);
+        db.execSQL(recordsCreate);
+        db.execSQL(emailsCreate);
 
     }
 

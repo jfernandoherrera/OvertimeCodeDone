@@ -22,6 +22,7 @@ import android.widget.TextView;
 import com.kaotiko.overtimecodedone.R;
 import com.kaotiko.overtimecodedone.activities.main.adapters.RecordsAdapter;
 import com.kaotiko.overtimecodedone.activities.main.fragments.DatePickerFragment;
+import com.kaotiko.overtimecodedone.activities.main.fragments.SetupEmailsFragment;
 import com.kaotiko.overtimecodedone.model.context.RecordContext;
 import com.kaotiko.overtimecodedone.model.domain.Record;
 
@@ -92,7 +93,9 @@ public class MainActivity extends AppCompatActivity  implements DatePickerFragme
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+
         return true;
+
     }
 
     @Override
@@ -104,10 +107,24 @@ public class MainActivity extends AppCompatActivity  implements DatePickerFragme
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+
+            showSetupEmailDialog();
+
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+
+    }
+
+    public void showSetupEmailDialog() {
+
+        SetupEmailsFragment setupEmailsFragment = new SetupEmailsFragment();
+
+        String tag = "editOpeningHours";
+
+        setupEmailsFragment.show(getSupportFragmentManager(), tag);
+
     }
 
     @Override

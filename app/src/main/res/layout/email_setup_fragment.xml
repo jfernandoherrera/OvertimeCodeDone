@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:id="@+id/appToolbar"
+        android:background="@drawable/background_shadow"
+        android:layout_height="66dp"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <com.kaotiko.overtimecodedone.utils.views.AppToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+    </android.support.design.widget.AppBarLayout>
+    <com.kaotiko.overtimecodedone.utils.views.AppEditText
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:background="@android:drawable/editbox_background"
+        android:gravity="center"
+        android:layout_marginLeft="8dp"
+        android:hint="@string/email"
+        android:inputType="textEmailAddress"
+        android:id="@+id/textEmailAddress"
+        android:textSize="18sp"
+        android:padding="25dp"
+        android:drawableRight="@mipmap/ic_plus"
+        android:textColor="@color/colorAccent"/>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_marginTop="58dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="8dp"
+        />
+</LinearLayout>
