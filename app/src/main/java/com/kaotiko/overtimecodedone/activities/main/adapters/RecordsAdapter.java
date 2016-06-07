@@ -141,6 +141,14 @@ public class RecordsAdapter extends RecyclerView.Adapter {
 
         record.setIsProgrammaticallyChanged(false);
 
+        if(record.getOnEditedDate()) {
+
+            holder.afterTextChanged();
+
+            record.setOnEditedDate(false);
+
+        }
+
         holder.addChangeTextListeners();
 
         holder.floatingActionButton.setOnClickListener(new View.OnClickListener() {
@@ -368,7 +376,7 @@ public class RecordsAdapter extends RecyclerView.Adapter {
             description.removeTextChangedListener(commitIdTextWatcher);
         }
 
-        private void afterTextChanged() {
+        protected void afterTextChanged() {
 
             if(! records.get(record).getIsProgrammaticallyChanged()) {
 

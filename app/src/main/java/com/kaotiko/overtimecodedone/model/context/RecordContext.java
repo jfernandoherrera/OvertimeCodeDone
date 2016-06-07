@@ -12,17 +12,21 @@ public class RecordContext {
     private RecordLocal recordLocal;
     public static  final String name = "database";
     private final int databaseVersion = 1;
-
+    private DatabaseHelper databaseHelper;
 
     public RecordContext(Context context) {
 
-        recordLocal = new RecordLocal(context, name, null, databaseVersion);
+        databaseHelper = new DatabaseHelper(context, name, null, databaseVersion);
+
+        open();
+
+        recordLocal = new RecordLocal(databaseHelper.getDatabase());
 
     }
 
     public void open() {
 
-     recordLocal.open();
+     databaseHelper.open();
 
     }
 

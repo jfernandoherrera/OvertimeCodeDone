@@ -33,6 +33,7 @@ public class SetupEmailsFragment extends DialogFragment {
     private ArrayList<Email> emails;
     private final int drawableRight = 2;
     EmailContext  emailContext;
+
     @Override
     public void onAttach(Context context) {
 

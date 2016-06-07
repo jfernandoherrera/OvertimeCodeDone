@@ -146,6 +146,8 @@ public class MainActivity extends AppCompatActivity  implements DatePickerFragme
 
                 record.setDate(calendar);
 
+                record.setOnEditedDate(true);
+
                 adapter.notifyDataSetChanged();
 
                 break;

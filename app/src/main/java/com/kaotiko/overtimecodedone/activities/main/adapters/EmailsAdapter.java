@@ -5,12 +5,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
-
 import com.kaotiko.overtimecodedone.R;
 import com.kaotiko.overtimecodedone.model.domain.Email;
 import com.kaotiko.overtimecodedone.utils.views.AppEditText;
-import com.kaotiko.overtimecodedone.utils.views.AppTextView;
 
 import java.util.ArrayList;
 
