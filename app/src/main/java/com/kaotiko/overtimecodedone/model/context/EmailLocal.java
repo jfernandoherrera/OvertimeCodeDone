@@ -6,6 +6,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+
 import com.kaotiko.overtimecodedone.model.domain.Email;
 import com.kaotiko.overtimecodedone.model.domain.EmailAttributes;
 import com.kaotiko.overtimecodedone.model.domain.RecordAttributes;

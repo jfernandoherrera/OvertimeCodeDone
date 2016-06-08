@@ -8,6 +8,7 @@
     <string name="commitId">ID Commit</string>
     <string name="email">Email</string>
     <string name="overtime_code_done">Codificando en Horas Extra</string>
+    <string name="who_send">A quien enviaras el reporte?</string>
     <string name="ok">Listo</string>
     <string name="date">Fecha</string>
 </resources>

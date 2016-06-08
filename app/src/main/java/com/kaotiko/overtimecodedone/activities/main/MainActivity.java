@@ -20,17 +20,20 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.kaotiko.overtimecodedone.R;
+import com.kaotiko.overtimecodedone.activities.main.adapters.EmailsAdapter;
 import com.kaotiko.overtimecodedone.activities.main.adapters.RecordsAdapter;
 import com.kaotiko.overtimecodedone.activities.main.fragments.DatePickerFragment;
 import com.kaotiko.overtimecodedone.activities.main.fragments.SetupEmailsFragment;
 import com.kaotiko.overtimecodedone.model.context.RecordContext;
+import com.kaotiko.overtimecodedone.model.domain.Email;
 import com.kaotiko.overtimecodedone.model.domain.Record;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class MainActivity extends AppCompatActivity  implements DatePickerFragment.OnDateSelected{
+public class MainActivity extends AppCompatActivity  implements DatePickerFragment.OnDateSelected, EmailsAdapter.OnEmailSelected{
 
+    private ArrayList<Email> emails;
     private LinearLayoutManager layoutManager;
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
@@ -123,6 +126,8 @@ public class MainActivity extends AppCompatActivity  implements DatePickerFragme
 
         String tag = "editOpeningHours";
 
+        emails = new ArrayList<>();
+
         setupEmailsFragment.show(getSupportFragmentManager(), tag);
 
     }
@@ -158,4 +163,41 @@ public class MainActivity extends AppCompatActivity  implements DatePickerFragme
 
     }
 
+    @Override
+    public boolean onEmailSelected(Email email) {
+
+        boolean isThere = emailIsThere(email);
+
+        if(isThere) {
+
+            emails.remove(email);
+
+        } else {
+
+            emails.add(email);
+
+        }
+
+        return isThere;
+
+    }
+
+    private boolean emailIsThere(Email email) {
+
+        boolean isThere = false;
+
+        for(Email temp : emails) {
+
+            if(temp.equals(email)) {
+
+                isThere = true;
+
+                break;
+
+            }
+        }
+
+        return isThere;
+
+    }
 }

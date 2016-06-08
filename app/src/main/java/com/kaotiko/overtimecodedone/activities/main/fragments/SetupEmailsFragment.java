@@ -5,12 +5,10 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
-import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 import com.kaotiko.overtimecodedone.R;
@@ -20,12 +18,13 @@ import com.kaotiko.overtimecodedone.model.domain.Email;
 import com.kaotiko.overtimecodedone.model.domain.Record;
 import com.kaotiko.overtimecodedone.utils.views.AppEditText;
 import com.kaotiko.overtimecodedone.utils.views.AppTextView;
+import com.kaotiko.overtimecodedone.utils.views.AppToolbar;
 
 import java.util.ArrayList;
 
 public class SetupEmailsFragment extends DialogFragment {
 
-    private Toolbar toolbar;
+    private AppToolbar toolbar;
     private AppEditText emailInput;
     private LinearLayoutManager layoutManager;
     private RecyclerView recyclerView;
@@ -33,6 +32,7 @@ public class SetupEmailsFragment extends DialogFragment {
     private ArrayList<Email> emails;
     private final int drawableRight = 2;
     EmailContext  emailContext;
+    private EmailsAdapter.OnEmailSelected emailSelected;
 
     @Override
     public void onAttach(Context context) {
@@ -40,6 +40,8 @@ public class SetupEmailsFragment extends DialogFragment {
         setStyle(DialogFragment.STYLE_NO_TITLE, 0);
 
         super.onAttach(context);
+
+        emailSelected = (EmailsAdapter.OnEmailSelected) context;
 
     }
 
@@ -51,9 +53,11 @@ public class SetupEmailsFragment extends DialogFragment {
 
         emailContext = new EmailContext(getContext());
 
-        toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
+        toolbar = (AppToolbar) rootView.findViewById(R.id.toolbar);
 
         toolbar.inflateMenu(R.menu.menu_ready);
+
+        toolbar.setTitle(getString(R.string.who_send));
 
         emailInput = (AppEditText) rootView.findViewById(R.id.textEmailAddress);
 
@@ -67,19 +71,26 @@ public class SetupEmailsFragment extends DialogFragment {
 
         emails = emailContext.getAllEmails();
 
-        adapter = new EmailsAdapter(emails);
+        adapter = new EmailsAdapter(emails, emailContext, emailSelected);
 
         recyclerView.setAdapter(adapter);
 
         MenuItem allSet = toolbar.getMenu().getItem(0);
 
         emailInput.setOnTouchListener(new View.OnTouchListener() {
+
             @Override
             public boolean onTouch(View v, MotionEvent event) {
 
+                boolean isDrawable = event.getRawX() >= (emailInput.getRight() - emailInput.getCompoundDrawables()[drawableRight].getBounds().width());
+
                 if(event.getAction() == MotionEvent.ACTION_UP) {
 
-                    if (event.getRawX() >= (emailInput.getRight() - emailInput.getCompoundDrawables()[drawableRight].getBounds().width())) {
+                    emailInput.setCompoundDrawablesWithIntrinsicBounds(null, null, getResources().getDrawable(R.mipmap.ic_plus), null);
+
+                    boolean isEmpty = emailInput.getText().length() == 0;
+
+                    if (! isEmpty && isDrawable) {
 
                         Email email = new Email(0, emailInput.getText().toString());
 
@@ -95,9 +106,13 @@ public class SetupEmailsFragment extends DialogFragment {
 
                     }
 
+                } else if(event.getAction() == MotionEvent.ACTION_DOWN) {
+
+                    emailInput.setCompoundDrawablesWithIntrinsicBounds(null, null, getResources().getDrawable(R.mipmap.ic_plus_pressed), null);
+
                 }
 
-                return false;
+                    return false;
 
             }
 
