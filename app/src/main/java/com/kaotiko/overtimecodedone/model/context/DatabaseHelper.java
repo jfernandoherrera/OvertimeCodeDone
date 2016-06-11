@@ -9,7 +9,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private final String recordsCreate = "CREATE TABLE records (id integer primary key autoincrement, date integer, commitId text, description text, durationHours integer, durationMinutes integer);";
     private final String emailsCreate = "CREATE TABLE emails (id integer primary key autoincrement, email text);";
-    private final String DATABASE_UPGRADE = "DROP TABLE IF EXISTS records";
+    private final String headersFootersCreate = "CREATE TABLE headersFooters (id integer primary key autoincrement, text text, type text);";
+    private final String databaseUpgradeRecords = "DROP TABLE IF EXISTS records";
+    private final String databaseUpgradeEmails = "DROP TABLE IF EXISTS emails";
+    private final String databaseUpgradeHeadersFooters = "DROP TABLE IF EXISTS headersFooters";
     private SQLiteDatabase database;
 
     public DatabaseHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
@@ -35,13 +38,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         db.execSQL(recordsCreate);
         db.execSQL(emailsCreate);
+        db.execSQL(headersFootersCreate);
 
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
-        db.execSQL(DATABASE_UPGRADE);
+        db.execSQL(databaseUpgradeEmails);
+        db.execSQL(databaseUpgradeHeadersFooters);
+        db.execSQL(databaseUpgradeRecords);
 
     }
 

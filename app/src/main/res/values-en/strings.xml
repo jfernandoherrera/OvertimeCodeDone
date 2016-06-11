@@ -5,6 +5,10 @@
     <string name="min">Min</string>
     <string name="duration">Duration</string>
     <string name="description">Description</string>
+    <string name="header">Header</string>
+    <string name="select_header">Select a header</string>
+    <string name="select_footer">Select a footer</string>
+    <string name="footer">Footer</string>
     <string name="commitId">ID Commit</string>
     <string name="overtime_code_done">OverTimeCodeDone</string>
     <string name="ok">OK</string>

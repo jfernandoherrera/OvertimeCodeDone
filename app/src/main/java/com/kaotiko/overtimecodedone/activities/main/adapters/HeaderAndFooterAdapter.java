@@ -1,5 +1,6 @@
 package com.kaotiko.overtimecodedone.activities.main.adapters;
 
+
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -14,58 +15,59 @@ import android.widget.LinearLayout;
 
 import com.kaotiko.overtimecodedone.R;
 import com.kaotiko.overtimecodedone.model.context.EmailContext;
+import com.kaotiko.overtimecodedone.model.context.HeaderAndFooterContext;
 import com.kaotiko.overtimecodedone.model.domain.Email;
-import com.kaotiko.overtimecodedone.model.domain.Record;
+import com.kaotiko.overtimecodedone.model.domain.HeaderAndFooter;
 import com.kaotiko.overtimecodedone.utils.views.AppEditText;
 
 import java.util.ArrayList;
 
-public class EmailsAdapter extends RecyclerView.Adapter{
+public class HeaderAndFooterAdapter  extends RecyclerView.Adapter{
 
-    ArrayList<Email> emails;
+    ArrayList<HeaderAndFooter> headerAndFooters;
     private final int drawableRight = 2;
-    private EmailContext emailContext;
-    private OnEmailSelected onEmailSelected;
+    private HeaderAndFooterContext headerAndFooterContext;
+    private OnHeaderFooterSelected onHeaderFooterSelected;
 
-    public interface OnEmailSelected{
+    public interface OnHeaderFooterSelected{
 
-        boolean onEmailSelected(Email email);
+        boolean onHeaderFooterSelected(HeaderAndFooter headerAndFooter);
 
     }
 
-    public EmailsAdapter(ArrayList<Email> emails, EmailContext emailContext, OnEmailSelected onEmailSelected) {
+    public HeaderAndFooterAdapter( ArrayList<HeaderAndFooter> headerAndFooters, HeaderAndFooterContext headerAndFooterContext, OnHeaderFooterSelected onHeaderFooterSelected) {
 
-        this.emails = emails;
+        this.headerAndFooters = headerAndFooters;
 
-        this.emailContext = emailContext;
+        this.headerAndFooterContext = headerAndFooterContext;
 
-        this.onEmailSelected = onEmailSelected;
+        this.onHeaderFooterSelected = onHeaderFooterSelected;
 
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.email_view, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.header_footer_view, parent, false);
 
-        EmailHolder emailHolder = new EmailHolder(v);
+        HeaderFooterHolder headerFooterHolder = new HeaderFooterHolder(v);
 
-        return emailHolder;
+        return headerFooterHolder;
 
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
 
-        final EmailHolder emailHolder = (EmailHolder)holder;
+        final HeaderFooterHolder emailHolder = (HeaderFooterHolder)holder;
 
-        final Email email = emails.get(position);
+        final HeaderAndFooter headerAndFooter = headerAndFooters.get(position);
 
         emailHolder.removeTextChangedListeners();
 
-        emailHolder.emailIndex = position;
+        emailHolder.textIndex = position;
 
-        emailHolder.email.setText(email.getEmail());
+        emailHolder.text.setText(headerAndFooter.getText());
 
         emailHolder.setTextWatcher();
 
@@ -74,9 +76,9 @@ public class EmailsAdapter extends RecyclerView.Adapter{
             @Override
             public void onClick(View v) {
 
-                emailContext.deleteEmail(emails.get(position));
+                headerAndFooterContext.delete(headerAndFooters.get(position));
 
-                emails.remove(position);
+                headerAndFooters.remove(position);
 
                 notifyDataSetChanged();
 
@@ -84,7 +86,7 @@ public class EmailsAdapter extends RecyclerView.Adapter{
 
         });
 
-        if(email.isSelected()) {
+        if(headerAndFooter.isSelected()) {
 
             emailHolder.select.setBackground(emailHolder.linearLayout.getResources().getDrawable(R.mipmap.ic_un_select));
 
@@ -100,22 +102,23 @@ public class EmailsAdapter extends RecyclerView.Adapter{
 
         }
 
-        if(email.isReadyToEdit()) {
+        if(headerAndFooter.isReadyToEdit()) {
 
             emailHolder.afterTextChanged();
 
         }
 
-         emailHolder.select.setOnClickListener(new View.OnClickListener() {
+        emailHolder.select.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
 
-                boolean isThere = onEmailSelected.onEmailSelected(emails.get(position));
+                boolean isThere = onHeaderFooterSelected.onHeaderFooterSelected(headerAndFooters.get(position));
 
+                Log.i("isther", String.valueOf(isThere));
                 if(isThere) {
 
-                    emails.get(position).setSelected(false);
+                    headerAndFooters.get(position).setSelected(false);
 
                     v.setBackground(v.getResources().getDrawable(R.mipmap.ic_select));
 
@@ -125,7 +128,9 @@ public class EmailsAdapter extends RecyclerView.Adapter{
 
                 } else {
 
-                    emails.get(position).setSelected(true);
+                    headerAndFooterUnSelectAll(position);
+
+                    headerAndFooters.get(position).setSelected(true);
 
                     v.setBackground(v.getResources().getDrawable(R.mipmap.ic_un_select));
 
@@ -139,33 +144,53 @@ public class EmailsAdapter extends RecyclerView.Adapter{
 
     }
 
-    @Override
-    public int getItemCount() {
+    private void headerAndFooterUnSelectAll( int index) {
 
-        return emails.size();
+        for(int i = 0; i < headerAndFooters.size(); i++) {
+
+            boolean lastSelected = headerAndFooters.get(i).isSelected();
+
+            if(i != index && lastSelected) {
+
+                headerAndFooters.get(i).setSelected(false);
+
+                notifyDataSetChanged();
+
+                break;
+
+            }
+
+        }
 
     }
 
-    public class EmailHolder extends RecyclerView.ViewHolder {
+    @Override
+    public int getItemCount() {
 
-        protected AppEditText email;
+        return headerAndFooters.size();
+
+    }
+
+    public class HeaderFooterHolder extends RecyclerView.ViewHolder {
+
+        protected AppEditText text;
         protected Button delete;
         protected Button select;
         private TextWatcher textWatcher;
-        protected int emailIndex;
+        protected int textIndex;
         protected LinearLayout linearLayout;
 
-        public EmailHolder(View itemView) {
+        public HeaderFooterHolder(View itemView) {
 
             super(itemView);
 
-            email = (AppEditText) itemView.findViewById(R.id.textEmailAddress);
+            text = (AppEditText) itemView.findViewById(R.id.text);
 
             delete = (Button) itemView.findViewById(R.id.delete);
 
             select = (Button) itemView.findViewById(R.id.select);
 
-            linearLayout = (LinearLayout) itemView.findViewById(R.id.emailContainer);
+            linearLayout = (LinearLayout) itemView.findViewById(R.id.textContainer);
 
         }
 
@@ -186,46 +211,46 @@ public class EmailsAdapter extends RecyclerView.Adapter{
                 @Override
                 public void afterTextChanged(Editable s) {
 
-                    EmailHolder.this.afterTextChanged();
+                   HeaderFooterHolder.this.afterTextChanged();
 
                 }
 
             };
 
-            email.addTextChangedListener(textWatcher);
+            text.addTextChangedListener(textWatcher);
 
         }
 
         protected void removeTextChangedListeners() {
 
-            email.removeTextChangedListener(textWatcher);
+            text.removeTextChangedListener(textWatcher);
 
         }
 
         protected void afterTextChanged() {
 
-            emails.get(emailIndex).setReadyToEdit(true);
+            headerAndFooters.get(textIndex).setReadyToEdit(true);
 
-            email.setCompoundDrawablesWithIntrinsicBounds(null, null, email.getResources().getDrawable(R.mipmap.ic_edit), null);
+            text.setCompoundDrawablesWithIntrinsicBounds(null, null, text.getResources().getDrawable(R.mipmap.ic_edit), null);
 
-            emails.get(emailIndex).setEmail(email.getText().toString());
+            headerAndFooters.get(textIndex).setText(text.getText().toString());
 
-            final int width = email.getResources().getDrawable(R.mipmap.ic_edit).getIntrinsicWidth();
+            final int width = text.getResources().getDrawable(R.mipmap.ic_edit).getIntrinsicWidth();
 
-            email.setOnTouchListener(new View.OnTouchListener() {
+            text.setOnTouchListener(new View.OnTouchListener() {
 
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
 
-                    boolean isDrawable = event.getRawX() >= (email.getRight() - width);
+                    boolean isDrawable = event.getRawX() >= (text.getRight() - width);
 
                     if(isDrawable) {
 
-                        emailContext.updateEmail(emails.get(emailIndex));
+                        headerAndFooterContext.update(headerAndFooters.get(textIndex));
 
-                        email.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+                        text.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
 
-                        emails.get(emailIndex).setReadyToEdit(false);
+                        headerAndFooters.get(textIndex).setReadyToEdit(false);
 
                     }
 

@@ -10,13 +10,11 @@
         android:background="@drawable/background_shadow"
         android:layout_height="66dp"
         android:theme="@style/AppTheme.AppBarOverlay">
-
         <com.kaotiko.overtimecodedone.utils.views.AppToolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="55dp"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
-
     </android.support.design.widget.AppBarLayout>
     <com.kaotiko.overtimecodedone.utils.views.AppEditText
         android:layout_width="match_parent"
@@ -25,9 +23,8 @@
         android:gravity="center"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:hint="@string/email"
-        android:inputType="textEmailAddress"
-        android:id="@+id/textEmailAddress"
+        android:inputType="text"
+        android:id="@+id/text"
         android:textSize="18sp"
         android:padding="20dp"
         android:drawableRight="@mipmap/ic_plus"

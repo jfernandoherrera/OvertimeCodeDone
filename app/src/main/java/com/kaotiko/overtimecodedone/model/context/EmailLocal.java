@@ -15,39 +15,16 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 
-public class EmailLocal extends SQLiteOpenHelper {
+public class EmailLocal  {
 
     private final String tableName = "emails";
-    private final String DATABASE_CREATE = "CREATE TABLE emails (id integer primary key autoincrement, email text);";
-    private final String DATABASE_UPGRADE = "DROP TABLE IF EXISTS emails";
     private SQLiteDatabase database;
 
-    public EmailLocal(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
+    public EmailLocal(SQLiteDatabase database) {
 
-        super(context, name, factory, version);
-
-    }
-
-    public void open() {
-
-        database = getWritableDatabase();
+        this.database = database;
 
     }
-
-    @Override
-    public void onCreate(SQLiteDatabase db) {
-
-        db.execSQL(DATABASE_CREATE);
-
-    }
-
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
-        db.execSQL(DATABASE_UPGRADE);
-
-    }
-
 
     public ArrayList<Email> getAllEmails() {
 
@@ -97,6 +74,12 @@ public class EmailLocal extends SQLiteOpenHelper {
         contentValues.put(EmailAttributes.email, email.getEmail());
 
         database.update(tableName, contentValues,"rowid="+ email.getId(), null);
+
+    }
+
+    public void deleteEmail(Email email) {
+
+        database.delete(tableName, "rowid=" + email.getId(), null);
 
     }
 

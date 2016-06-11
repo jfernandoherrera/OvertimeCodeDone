@@ -3,6 +3,7 @@ package com.kaotiko.overtimecodedone.activities.main;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceActivity;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -21,23 +22,31 @@ import android.widget.TextView;
 
 import com.kaotiko.overtimecodedone.R;
 import com.kaotiko.overtimecodedone.activities.main.adapters.EmailsAdapter;
+import com.kaotiko.overtimecodedone.activities.main.adapters.HeaderAndFooterAdapter;
 import com.kaotiko.overtimecodedone.activities.main.adapters.RecordsAdapter;
 import com.kaotiko.overtimecodedone.activities.main.fragments.DatePickerFragment;
 import com.kaotiko.overtimecodedone.activities.main.fragments.SetupEmailsFragment;
+import com.kaotiko.overtimecodedone.activities.main.fragments.SetupHeaderAndFooterFragment;
 import com.kaotiko.overtimecodedone.model.context.RecordContext;
 import com.kaotiko.overtimecodedone.model.domain.Email;
+import com.kaotiko.overtimecodedone.model.domain.HeaderAndFooter;
+import com.kaotiko.overtimecodedone.model.domain.HeaderAndFooterAttributes;
 import com.kaotiko.overtimecodedone.model.domain.Record;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class MainActivity extends AppCompatActivity  implements DatePickerFragment.OnDateSelected, EmailsAdapter.OnEmailSelected{
+public class MainActivity extends AppCompatActivity  implements DatePickerFragment.OnDateSelected, EmailsAdapter.OnEmailSelected, SetupEmailsFragment.OnEmailsFinished,
+        SetupHeaderAndFooterFragment.HeaderIsThere, HeaderAndFooterAdapter.OnHeaderFooterSelected{
 
     private ArrayList<Email> emails;
     private LinearLayoutManager layoutManager;
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private ArrayList<Record> records;
+    private HeaderAndFooter header;
+    private HeaderAndFooter footer;
+
     RecordContext recordContext;
 
     public static void goToMain(Context context) {
@@ -132,6 +141,17 @@ public class MainActivity extends AppCompatActivity  implements DatePickerFragme
 
     }
 
+
+    public void showSetupHeaderFooterDialog() {
+
+        SetupHeaderAndFooterFragment  setupHeaderAndFooterFragment = new SetupHeaderAndFooterFragment();
+
+        String tag = "HeaderAndFooter";
+
+        setupHeaderAndFooterFragment.show(getSupportFragmentManager(), tag);
+
+    }
+
     @Override
     public void onDateSelected(int year, int monthOfYear, int dayOfMonth, Record record) {
 
@@ -195,6 +215,66 @@ public class MainActivity extends AppCompatActivity  implements DatePickerFragme
                 break;
 
             }
+        }
+
+        return isThere;
+
+    }
+
+    @Override
+    public boolean onEmailsFinished() {
+
+        boolean thereEmail = ! emails.isEmpty();
+
+        if(thereEmail) {
+
+            showSetupHeaderFooterDialog();
+
+        }
+
+        return thereEmail;
+
+    }
+
+    @Override
+    public boolean onHeaderIsThere() {
+
+        return ! (header == null);
+
+    }
+
+    @Override
+    public boolean onHeaderFooterSelected(HeaderAndFooter headerAndFooter) {
+
+        boolean isThere = false;
+
+        if(headerAndFooter.getType().equals(HeaderAndFooterAttributes.typeHeader)) {
+
+            if(headerAndFooter.equals(header)) {
+
+                isThere = true;
+
+                header = null;
+
+            } else {
+
+                header = headerAndFooter;
+            }
+
+        } else {
+
+            if(headerAndFooter.equals(footer)) {
+
+                isThere = true;
+
+                footer = null;
+
+            } else {
+
+                footer = headerAndFooter;
+
+            }
+
         }
 
         return isThere;

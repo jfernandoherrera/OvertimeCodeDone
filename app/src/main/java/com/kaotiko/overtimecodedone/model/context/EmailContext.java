@@ -12,17 +12,21 @@ public class EmailContext {
     private EmailLocal emailLocal;
     public static  final String name = "database";
     private final int databaseVersion = 1;
+    private DatabaseHelper databaseHelper;
 
     public EmailContext(Context context) {
 
-        emailLocal = new EmailLocal(context, name, null, databaseVersion);
+        databaseHelper = new DatabaseHelper(context, name, null, databaseVersion);
+
+        open();
+
+        emailLocal = new EmailLocal(databaseHelper.getDatabase());
 
     }
 
-
     public void open() {
 
-        emailLocal.open();
+        databaseHelper.open();
 
     }
 
@@ -41,6 +45,12 @@ public class EmailContext {
     public void updateEmail(Email email) {
 
         emailLocal.updateEmail(email);
+
+    }
+
+    public void deleteEmail(Email email) {
+
+        emailLocal.deleteEmail(email);
 
     }
 

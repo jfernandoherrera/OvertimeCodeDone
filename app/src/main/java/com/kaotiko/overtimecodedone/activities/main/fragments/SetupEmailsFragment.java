@@ -33,6 +33,13 @@ public class SetupEmailsFragment extends DialogFragment {
     private final int drawableRight = 2;
     EmailContext  emailContext;
     private EmailsAdapter.OnEmailSelected emailSelected;
+    private OnEmailsFinished onEmailsFinished;
+
+    public interface OnEmailsFinished{
+
+        boolean onEmailsFinished();
+
+    }
 
     @Override
     public void onAttach(Context context) {
@@ -40,6 +47,8 @@ public class SetupEmailsFragment extends DialogFragment {
         setStyle(DialogFragment.STYLE_NO_TITLE, 0);
 
         super.onAttach(context);
+
+        onEmailsFinished = (OnEmailsFinished) context;
 
         emailSelected = (EmailsAdapter.OnEmailSelected) context;
 
@@ -55,7 +64,7 @@ public class SetupEmailsFragment extends DialogFragment {
 
         toolbar = (AppToolbar) rootView.findViewById(R.id.toolbar);
 
-        toolbar.inflateMenu(R.menu.menu_ready);
+        toolbar.inflateMenu(R.menu.menu_next);
 
         toolbar.setTitle(getString(R.string.who_send));
 
@@ -123,7 +132,11 @@ public class SetupEmailsFragment extends DialogFragment {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
 
+                    if(onEmailsFinished.onEmailsFinished()) {
 
+                        dismiss();
+
+                    }
 
                 return false;
 
