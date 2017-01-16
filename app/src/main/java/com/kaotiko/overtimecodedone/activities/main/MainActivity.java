@@ -11,6 +11,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.ListViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.Menu;
@@ -36,8 +37,8 @@ import com.kaotiko.overtimecodedone.model.domain.Record;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class MainActivity extends AppCompatActivity  implements DatePickerFragment.OnDateSelected, EmailsAdapter.OnEmailSelected, SetupEmailsFragment.OnEmailsFinished,
-        SetupHeaderAndFooterFragment.HeaderIsThere, HeaderAndFooterAdapter.OnHeaderFooterSelected{
+public class MainActivity extends AppCompatActivity  implements DatePickerFragment.OnDateSelected, EmailsAdapter.OnEmailSelected, SetupEmailsFragment.OnEmailsFinished
+        ,SetupHeaderAndFooterFragment.OnReadyEmail, HeaderAndFooterAdapter.OnHeaderFooterSelected{
 
     private ArrayList<Email> emails;
     private LinearLayoutManager layoutManager;
@@ -103,7 +104,7 @@ public class MainActivity extends AppCompatActivity  implements DatePickerFragme
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
+
         getMenuInflater().inflate(R.menu.menu_main, menu);
 
         return true;
@@ -112,13 +113,10 @@ public class MainActivity extends AppCompatActivity  implements DatePickerFragme
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_settings && ! records.isEmpty()) {
 
             showSetupEmailDialog();
 
@@ -236,12 +234,6 @@ public class MainActivity extends AppCompatActivity  implements DatePickerFragme
 
     }
 
-    @Override
-    public boolean onHeaderIsThere() {
-
-        return ! (header == null);
-
-    }
 
     @Override
     public boolean onHeaderFooterSelected(HeaderAndFooter headerAndFooter) {
@@ -257,6 +249,7 @@ public class MainActivity extends AppCompatActivity  implements DatePickerFragme
                 header = null;
 
             } else {
+
 
                 header = headerAndFooter;
             }
@@ -280,4 +273,103 @@ public class MainActivity extends AppCompatActivity  implements DatePickerFragme
         return isThere;
 
     }
+
+
+    private void createEmail() {
+
+        String[] emailsToSend = new String[emails.size()];
+
+        for(int i = 0; i < emails.size(); i++) {
+
+            emailsToSend[i] = emails.get(i).getEmail() ;
+
+        }
+
+        String msg = header.getText() + " ";
+
+        for(Record record : records) {
+
+            String commitID = record.getCommitId() == null || record.getCommitId().equals("") ? "" : getString(R.string.commitId) + " " + record.getCommitId();
+
+            String description = record.getDescription() == null || record.getDescription().equals("") ? "" : getString(R.string.description) + " " +
+
+                    record.getDescription() + " \n";
+
+            msg = msg + "\n" + commitID + " \n" +
+
+            getString(R.string.date) + " " + dateFormat(record.getDate())+ " \n" +
+
+            getString(R.string.duration) + " " + getDuration(record) + "\n" + description;
+
+        }
+
+        msg = msg + "\n" + footer.getText();
+
+        String typeEmail = "message/rfc822";
+
+        Intent intent = new Intent(Intent.ACTION_SEND);
+
+        intent.setType(typeEmail);
+
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+        intent.putExtra(android.content.Intent.EXTRA_EMAIL, emailsToSend);
+
+        intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.subject));
+
+        intent.putExtra(Intent.EXTRA_TEXT, msg);
+
+        Intent mailer = Intent.createChooser(intent, null);
+
+        startActivity(mailer);
+
+    }
+
+    @Override
+    public void onReadyEmail() {
+
+        createEmail();
+
+    }
+
+    private String getDuration(Record record) {
+
+        String duration = "";
+
+        if(record.getDurationHours() != 0) {
+
+            duration = duration + record.getDurationHours() + "h ";
+
+        }
+
+        if (record.getDurationMinutes() != 0) {
+
+            duration = duration + record.getDurationMinutes() + "m ";
+
+        }
+
+        return duration;
+
+    }
+
+    private String dateFormat(Calendar calendar){
+
+        String title = DateUtils.formatDateTime(this,
+
+                calendar.getTimeInMillis(),
+
+                DateUtils.FORMAT_SHOW_DATE
+
+                        | DateUtils.FORMAT_SHOW_WEEKDAY
+
+                        | DateUtils.FORMAT_SHOW_YEAR
+
+                        | DateUtils.FORMAT_ABBREV_MONTH
+
+                        | DateUtils.FORMAT_ABBREV_WEEKDAY);
+
+        return title;
+
+    }
+
 }

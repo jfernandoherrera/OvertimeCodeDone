@@ -6,6 +6,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,17 +24,18 @@ public class SetupHeaderAndFooterFragment extends DialogFragment {
 
     private AppToolbar toolbar;
     private HeaderAndFooterContext headerAndFooterContext;
-    private HeaderIsThere headerIsThere;
+    private OnReadyEmail onReadyEmail;
     private ArrayList<HeaderAndFooter> headerAndFooters;
     private AppEditText headerFooter;
     private LinearLayoutManager layoutManager;
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private final int drawableRight = 2;
+    private MenuItem next;
 
-    public interface HeaderIsThere{
+    public interface OnReadyEmail {
 
-        boolean onHeaderIsThere();
+        void onReadyEmail();
 
     }
 
@@ -44,7 +46,7 @@ public class SetupHeaderAndFooterFragment extends DialogFragment {
 
         super.onAttach(context);
 
-        headerIsThere = (HeaderIsThere) context;
+        onReadyEmail = (OnReadyEmail) context;
 
     }
 
@@ -60,6 +62,27 @@ public class SetupHeaderAndFooterFragment extends DialogFragment {
 
         toolbar.inflateMenu(R.menu.menu_next);
 
+        next = toolbar.getMenu().getItem(0);
+
+        next.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+
+                HeaderAndFooterAdapter headerAndFooterAdapter = (HeaderAndFooterAdapter) adapter;
+
+                if(headerAndFooterAdapter.isHaveSelected()) {
+
+                    setupFooter();
+
+                }
+
+                return false;
+
+            }
+
+        });
+
         headerFooter = (AppEditText) rootView.findViewById(R.id.text);
 
         layoutManager = new LinearLayoutManager(getContext());
@@ -68,17 +91,42 @@ public class SetupHeaderAndFooterFragment extends DialogFragment {
 
         recyclerView.setLayoutManager(layoutManager);
 
-        setup();
+        setupHeader();
 
         return rootView;
 
     }
 
-    private void setup() {
+    private void setupFooter() {
 
-        if(headerIsThere.onHeaderIsThere()) {
+        toolbar.inflateMenu(R.menu.menu_ready);
 
-            toolbar.setTitle(getString(R.string.select_footer));
+        next.setVisible(false);
+
+        MenuItem ready = toolbar.getMenu().getItem(1);
+
+        ready.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+
+                HeaderAndFooterAdapter headerAndFooterAdapter = (HeaderAndFooterAdapter) adapter;
+
+                if(headerAndFooterAdapter.isHaveSelected()) {
+
+                    onReadyEmail.onReadyEmail();
+
+                    dismiss();
+
+                }
+
+                return false;
+
+            }
+
+        });
+
+        toolbar.setTitle(getString(R.string.select_footer));
 
             headerFooter.setHint(R.string.footer);
 
@@ -111,24 +159,30 @@ public class SetupHeaderAndFooterFragment extends DialogFragment {
 
             });
 
-            headerAndFooters = headerAndFooterContext.getAllFooters();
+        headerAndFooters = headerAndFooterContext.getAllFooters();
 
-        } else {
+        adapter = new HeaderAndFooterAdapter(headerAndFooters, headerAndFooterContext, (HeaderAndFooterAdapter.OnHeaderFooterSelected) getContext());
 
-            toolbar.setTitle(getString(R.string.select_header));
+        recyclerView.setAdapter(adapter);
 
-            headerFooter.setHint(R.string.header);
+    }
 
-            headerFooter.setOnTouchListener(new View.OnTouchListener() {
+    private void setupHeader() {
 
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
+        toolbar.setTitle(getString(R.string.select_header));
 
-                    boolean isDrawable = event.getRawX() >= (headerFooter.getRight() - headerFooter.getCompoundDrawables()[drawableRight].getBounds().width());
+        headerFooter.setHint(R.string.header);
 
-                    boolean isEmpty = headerFooter.getText().length() == 0;
+        headerFooter.setOnTouchListener(new View.OnTouchListener() {
 
-                    if (! isEmpty && isDrawable) {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                boolean isDrawable = event.getRawX() >= (headerFooter.getRight() - headerFooter.getCompoundDrawables()[drawableRight].getBounds().width());
+
+                boolean isEmpty = headerFooter.getText().length() == 0;
+
+                if (! isEmpty && isDrawable) {
 
                     HeaderAndFooter headerAndFooter = new HeaderAndFooter(0, headerFooter.getText().toString(), HeaderAndFooterAttributes.typeHeader);
 
@@ -142,21 +196,18 @@ public class SetupHeaderAndFooterFragment extends DialogFragment {
 
                 }
 
-                    return false;
+                return false;
 
-                }
+            }
 
-            });
+        });
 
 
-            headerAndFooters = headerAndFooterContext.getAllHeaders();
+        headerAndFooters = headerAndFooterContext.getAllHeaders();
 
-        }
+    adapter = new HeaderAndFooterAdapter(headerAndFooters, headerAndFooterContext, (HeaderAndFooterAdapter.OnHeaderFooterSelected) getContext());
 
-        adapter = new HeaderAndFooterAdapter(headerAndFooters, headerAndFooterContext, (HeaderAndFooterAdapter.OnHeaderFooterSelected) getContext());
-
-        recyclerView.setAdapter(adapter);
-
+    recyclerView.setAdapter(adapter);
     }
 
 }

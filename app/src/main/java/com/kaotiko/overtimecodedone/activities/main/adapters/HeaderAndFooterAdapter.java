@@ -28,6 +28,7 @@ public class HeaderAndFooterAdapter  extends RecyclerView.Adapter{
     private final int drawableRight = 2;
     private HeaderAndFooterContext headerAndFooterContext;
     private OnHeaderFooterSelected onHeaderFooterSelected;
+    private boolean haveSelected;
 
     public interface OnHeaderFooterSelected{
 
@@ -39,9 +40,17 @@ public class HeaderAndFooterAdapter  extends RecyclerView.Adapter{
 
         this.headerAndFooters = headerAndFooters;
 
+        haveSelected = false;
+
         this.headerAndFooterContext = headerAndFooterContext;
 
         this.onHeaderFooterSelected = onHeaderFooterSelected;
+
+    }
+
+    public boolean isHaveSelected() {
+
+        return haveSelected;
 
     }
 
@@ -115,8 +124,9 @@ public class HeaderAndFooterAdapter  extends RecyclerView.Adapter{
 
                 boolean isThere = onHeaderFooterSelected.onHeaderFooterSelected(headerAndFooters.get(position));
 
-                Log.i("isther", String.valueOf(isThere));
                 if(isThere) {
+
+                    haveSelected = false;
 
                     headerAndFooters.get(position).setSelected(false);
 
@@ -127,6 +137,8 @@ public class HeaderAndFooterAdapter  extends RecyclerView.Adapter{
                     emailHolder.linearLayout.setBackground(normalBackground);
 
                 } else {
+
+                    haveSelected = true;
 
                     headerAndFooterUnSelectAll(position);
 

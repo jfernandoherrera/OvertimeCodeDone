@@ -31,7 +31,7 @@ public class HeaderAndFooterLocal {
 
         ArrayList<HeaderAndFooter> headerAndFooters = new ArrayList<>();
 
-        Cursor cursor = database.query(tableName, null, "type = ?",new String[] {HeaderAndFooterAttributes.typeHeader}, null, null, null );
+        Cursor cursor = database.query(tableName, null, "type = ?", new String[] {HeaderAndFooterAttributes.typeHeader}, null, null, null );
 
         if(cursor != null && cursor.moveToFirst()) {
 
@@ -59,7 +59,7 @@ public class HeaderAndFooterLocal {
 
         ArrayList<HeaderAndFooter> headerAndFooters = new ArrayList<>();
 
-        Cursor cursor = database.query(tableName, null, "type = " + HeaderAndFooterAttributes.typeFooter, null, null, null, null );
+        Cursor cursor = database.query(tableName, null, "type = ?", new String[] {HeaderAndFooterAttributes.typeFooter}, null, null, null );
 
         if(cursor != null && cursor.moveToFirst()) {
 

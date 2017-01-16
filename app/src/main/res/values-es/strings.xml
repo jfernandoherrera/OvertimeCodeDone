@@ -10,6 +10,9 @@
     <string name="select_header">Seleccione un encabezado</string>
     <string name="select_footer">Seleccione un pie de pagina</string>
     <string name="footer">Pie de pagina</string>
+    <string name="who_send">A quien enviaras el reporte?</string>
+    <string name="email">Correo</string>
+    <string name="subject">Reporte de Codificando en Horas Extra</string>
     <string name="overtime_code_done">Codificando en Horas Extra</string>
     <string name="ok">Listo</string>
     <string name="date">Fecha</string>
